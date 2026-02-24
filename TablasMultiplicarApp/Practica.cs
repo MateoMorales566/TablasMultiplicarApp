@@ -16,6 +16,7 @@ namespace TablasMultiplicarApp
         private readonly Random _rnd = new Random();
         private int _a; // primer número
         private int _b; // segundo número
+        private System.Windows.Forms.Timer _timer;
         public Practica()
         {
             InitializeComponent();
@@ -62,17 +63,11 @@ namespace TablasMultiplicarApp
             if (user == correcta)
             {
                 lblResultado.Text = "✅ ¡Correcto!";
-                // Opcional: después de 1 seg genera otra automática
-                // Timer simple:
-                var t = new System.Windows.Forms.Timer();
-                t.Interval = 900;
-                t.Tick += (s, ev) =>
-                {
-                    t.Stop();
-                    t.Dispose();
-                    GenerarNuevaOperacion();
-                };
-                t.Start();
+                
+                _timer = new System.Windows.Forms.Timer();
+                _timer.Interval = 900;
+                _timer.Tick += Timer_Tick;  
+                _timer.Start();            
             }
             else
             {
@@ -81,7 +76,13 @@ namespace TablasMultiplicarApp
                 txtRespuesta.SelectAll();
             }
         }
-        
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _timer.Stop();
+            _timer.Dispose();
+            GenerarNuevaOperacion();
+        }
+
 
         private void btnVolver_Click_1(object sender, EventArgs e)
         {
